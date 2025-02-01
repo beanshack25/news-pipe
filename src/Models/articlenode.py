@@ -8,6 +8,7 @@ class ArticleNode:
         self.timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
         self.link = link
         self.predecessors = []
+        self.successors = []
         self.depth = depth
         self.significance = significance
 

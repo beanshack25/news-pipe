@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article as NewsArticle
-import time
 import os
 from urllib.parse import quote_plus
 
@@ -87,6 +86,8 @@ def find_articles(topic):
 
         response = requests.get(url)
         data = response.json()
+
+        print(title)
 
         for item in data["items"]:
             url = item["link"]

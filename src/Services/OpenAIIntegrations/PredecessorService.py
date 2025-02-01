@@ -1,6 +1,6 @@
-from OpenAIQueryService import OpenAIGetArticlePredecessors
-from OpenAIAdapter import parseJson
-from ArticleToOAIJsonAdapter import ArticleToJsonAdapter
+from src.Services.OpenAIIntegrations.OpenAIQueryService import OpenAIGetArticlePredecessors
+from src.Services.OpenAIIntegrations.OpenAIAdapter import parseJson
+from src.Services.OpenAIIntegrations.ArticleToOAIJsonAdapter import ArticleToJsonAdapter
 from src.Models.articlenode import ArticleNode
 
 def query(article: ArticleNode):
