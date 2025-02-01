@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from src.Services.OpenAIIntegrations.OpenAIQueryService import OpenAIGetArticlePredecessors, OpenAIGetArticleSucessors, OpenAIGetFuture
 from src.Services.Webscraping.webscraper import parse, find_articles
 
@@ -6,6 +7,7 @@ class ArticleNode:
 
     def __init__(self, title: str, content: str, timestamp: datetime.datetime, link: str, depth: int, significance: int):
         self.title = title
+        self.id = uuid.uuid4()
         self.content = content
         self.timestamp = timestamp
         self.link = link
@@ -98,7 +100,12 @@ class ArticleNode:
                 for node in self.predecessors:
                     node.explore_further(link)
 
-
+    def to_client(self):
+        baseJson = self.toJson
+        baseJson["id"] = self.id
+        if len(self.successors) > 0:
+            baseJson["parent"] = self.successors[0].id
+        baseJson
 
     def __repr__(self):
         string = "\n--------------\n"

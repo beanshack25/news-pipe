@@ -1,9 +1,9 @@
 from src.Models.articlenode import ArticleNode
 from src.Services.Webscraping.webscraper import parse, find_articles
 
-roots = []
 
-def build_reg_tree(root: str):
+
+def build_reg_tree(root: str, roots: list[ArticleNode]):
     title, text, timestamp = parse(root)
     rootNode = ArticleNode(title, text, timestamp, root, 0, 0)
 
@@ -26,7 +26,7 @@ def build_reg_tree(root: str):
 
     print(node.get_potential_future())
 
-def explore_new_node(root: str):
+def explore_new_node(root: str, roots: list[ArticleNode]):
     title, text, timestamp = parse(root)
     rootNode = ArticleNode(title, text, timestamp, root, 0, 0)
 
@@ -35,10 +35,6 @@ def explore_new_node(root: str):
             node.explore_further(rootNode)
             break
     else:
-        build_reg_tree(root)
+        build_reg_tree(root, roots)
     
         
-
-
-urln = "https://www.bbc.co.uk/news/technology-26969629"
-build_reg_tree(urln)
