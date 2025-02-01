@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article as NewsArticle
+from newspaper.article import ArticleException
 import os
 from urllib.parse import quote_plus
 
@@ -24,19 +25,16 @@ def getTimeStamp(title):
 
 
 def parse(url):
-    article = NewsArticle(url)
-    article.download()
-    article.parse()
+    try:
+        article = NewsArticle(url, headers=headers)
+        article.download()
+        article.parse()
+    except ArticleException:
+        return None, None, None
 
     title = article.title
     text = article.text
-
-    timestamp = article.publish_date
-    if timestamp is None:
-        # print("Timestamp was none")
-        timestamp = getTimeStamp(title)
-
-    # print(timestamp is str)
+    timestamp = getTimeStamp(title)
 
     return title, text, timestamp
 
@@ -66,7 +64,13 @@ def find_articles(topic):
     url = url_search + quote_plus(topic)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
+
+    print(response  )
+
     time_volume = find_volume_articles(soup)
+
+    if len(time_volume) == 0:
+        return None
 
     event_time = max(time_volume, key=time_volume.get)
 
@@ -82,20 +86,21 @@ def find_articles(topic):
 
     ret = []
 
-    print(ret_articles[1].find("button")["aria-label"][7:])
-
     for article in ret_articles:
 
         title = quote_plus(article.find("button")["aria-label"][7:])
 
         url = f'https://www.googleapis.com/customsearch/v1?q={title}&cx={seid}&key={seapi}'
 
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         data = response.json()
 
-        for item in data["items"]:
-            url = item["link"]
-            break
+        try:    
+            for item in data["items"]:
+                url = item["link"]
+                break
+        except KeyError:
+            pass
 
         ret.append(url)
 

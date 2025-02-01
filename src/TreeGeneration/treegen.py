@@ -1,45 +1,32 @@
 from src.Models.articlenode import ArticleNode
-from src.Services.OpenAIIntegrations.PredecessorService import query
 from src.Services.Webscraping.webscraper import parse, find_articles
 
-class Tree:
-    def __init__(self, articleURL: str, MAXD: int = 4):
-        self.rootNode = None
-        self.MAXD = MAXD
-        self.build(articleURL)
+def build_reg_tree(root: str):
+    title, text, timestamp = parse(root)
+    rootNode = ArticleNode(title, text, timestamp, root, 0, 0)
 
-    def build(self, rootString):
+    # generate 2 generations of predecessors
+    node = rootNode
+    for i in range(2):
 
-        title, content, publishDate  = parse(rootString)
-        self.rootNode = ArticleNode(title, content, publishDate, rootString, 0, 10)
+        print("Generating predecessors")
 
-        q = [self.rootNode]
+        if not node.find_predecessors(3):
+            break
+        node = node.predecessors[0]
 
-        while q:
-            nodeOfInterest = q.pop(0)
-            if nodeOfInterest.depth >= self.MAXD:
-                continue
+    # try to generate 2 generations of sucessors
+    node = rootNode
+    for i in range(2):
 
-            results = query(nodeOfInterest)
-            for pred in results["predecessors"]:
-                urls = find_articles(pred[0])
-                title, content, publishDate = parse(urls[1])
-                article = ArticleNode(title, content, publishDate, urls[1], nodeOfInterest.depth + 1, pred[1])
-                q.append(article)
-                nodeOfInterest.predecessors.append(article)
-                article.successors.append(nodeOfInterest)
+        print("Generating sucessors")
 
-    def __repr__(self):
-        cns = [self.rootNode]
-        string = ""
-        while cns:
-            cn = cns.pop(0)
-            string += cn.title + "::" + str(cn.depth) + "\n----------------\n"
-            cns.extend(cn.predecessors)
+        if not node.find_sucessors(2):
+            break
+        node = node.successors[0]
 
-        return string
+        
 
 
-urln = "https://www.bbc.co.uk/news/articles/c98yn345555o"
-tree = Tree(urln)
-print(tree)
+urln = "https://news.sky.com/story/teenage-gamer-becomes-first-person-to-beat-tetris-13041615"
+build_reg_tree(urln)

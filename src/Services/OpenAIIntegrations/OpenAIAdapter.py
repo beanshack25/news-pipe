@@ -8,7 +8,6 @@ DTF = "%d-%m-%Y"
 def parseJson(jsonString):
 
     data = json.loads(jsonString)
-    data["event_timeline"] = parseEventTimeline(data["event_timeline"])
     data["predecessors"] = list(map(lambda x: (x[0], x[1]), data["predecessors"]))
 
     return data
