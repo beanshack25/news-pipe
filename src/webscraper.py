@@ -15,11 +15,17 @@ def get_news_articles(url):
 
     soup = BeautifulSoup(response.text, "html.parser")
 
+    print(soup.find("date date--v2"))
+
     # Extract the article headline
     headline = soup.find("h1").get_text(strip=True) if soup.find("h1") else "No headline found"
+
+    # Extract the publish date (if available)
+    time_tag = soup.find("time")
+    publish_date = time_tag["datetime"] if time_tag and "datetime" in time_tag.attrs else "No date found"
 
     # Extract the article body
     paragraphs = soup.find_all("p")
     content = "\n".join(p.get_text(strip=True) for p in paragraphs)
 
-    return {"headline": headline, "content": content}
+    return {"headline": headline, "content": content, "publish_date": publish_date}
