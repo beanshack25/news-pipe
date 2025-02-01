@@ -1,31 +1,26 @@
-# Scrape news articles from the web
-
 import requests
 from bs4 import BeautifulSoup
+from newspaper import Article as NewsArticle
 
-def get_news_articles(url):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-    }
-
-    response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        print(f"Failed to fetch the page, status code: {response.status_code}")
-        return None
-
+def getTimeStamp(title):
+    url_base = r"https://www.news.google.com/search?q="
+    url = url_base + title.replace(" ", "+")
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
+    time = soup.find("time", {"class": "hvbAAd"})
+    return time["datetime"]
 
-    print(soup.find("meta", {"property": "article:published_time"}) or soup.find("meta", {"name": "date"}))
+def parse(url):
 
-    # Extract the article headline
-    headline = soup.find("h1").get_text(strip=True) if soup.find("h1") else "No headline found"
+    article = NewsArticle(url)
+    article.download()
+    article.parse()
 
-    # Extract the publish date (if available)
-    time_tag = soup.find("time")
-    publish_date = time_tag["datetime"] if time_tag and "datetime" in time_tag.attrs else "No date found"
+    title = article.title
+    text = article.text
 
-    # Extract the article body
-    paragraphs = soup.find_all("p")
-    content = "\n".join(p.get_text(strip=True) for p in paragraphs)
+    timestamp = article.publish_date
+    if timestamp is None:
+        timestamp = getTimeStamp(title)
 
-    return {"headline": headline, "content": content, "publish_date": publish_date}
+    return title, text, timestamp
