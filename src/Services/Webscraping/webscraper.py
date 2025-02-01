@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from newspaper import Article as NewsArticle
 import time
 import os
+from urllib.parse import quote_plus
 
 url_base = r"https://www.news.google.com/"
 url_search = url_base + r"search?q="
@@ -14,12 +15,14 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
 }
 
+
 def getTimeStamp(title):
     url = url_search + title.replace(" ", "+")
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     time = soup.find("time", {"class": "hvbAAd"})
     return time["datetime"]
+
 
 def parse(url):
     article = NewsArticle(url)
@@ -35,13 +38,14 @@ def parse(url):
 
     return title, text, timestamp
 
+
 def make_datetime_month_year(time):
     time = time.split("T")[0].split("-")
     time = time[1] + "-" + time[0]
     return time
 
-def find_volume_articles(soup):
 
+def find_volume_articles(soup):
     time_volume = {}
 
     for article in soup.find_all("time", {"class": "hvbAAd"}):
@@ -57,7 +61,7 @@ def find_volume_articles(soup):
 
 
 def find_articles(topic):
-    url = url_search + topic.replace(" ", "+")
+    url = url_search + quote_plus(topic)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     time_volume = find_volume_articles(soup)
@@ -75,21 +79,26 @@ def find_articles(topic):
                 break
 
     ret = []
+    i = 5
     for article in ret_articles:
 
-        title = article.find("button")["aria-label"].split(" - ")[1].replace(" ", "+")
+        title = quote_plus(article.find("button")["aria-label"][7:])
 
         url = f'https://www.googleapis.com/customsearch/v1?q={title}&cx={seid}&key={seapi}'
 
         response = requests.get(url)
         data = response.json()
 
+        with open(f"test{i}.txt", "w", encoding="utf-8") as f:
+            soup = BeautifulSoup(response.text, "html.parser")
+            f.write(soup.prettify())
+
         for item in data["items"]:
-            if "news" in item["link"]:
-                url = item["link"]
-                break
+            url = item["link"]
+            break
+
+        i += 1
 
         ret.append(url)
-
 
     return ret
