@@ -15,7 +15,7 @@ def get_news_articles(url):
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-    print(soup.find("date date--v2"))
+    print(soup.find("meta", {"property": "article:published_time"}) or soup.find("meta", {"name": "date"}))
 
     # Extract the article headline
     headline = soup.find("h1").get_text(strip=True) if soup.find("h1") else "No headline found"
