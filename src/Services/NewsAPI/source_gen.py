@@ -1,4 +1,3 @@
-
 import requests
 
 def get_sources():
