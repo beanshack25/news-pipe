@@ -6,5 +6,8 @@ class ArticlePipe:
         self.article = article
         self.children = []
 
+    def add_child(self, child):
+        self.children.append(child)
+
     def __call__(self):
         return self.article
