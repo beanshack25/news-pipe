@@ -1,31 +1,25 @@
-// Check if the iframe already exists
-if (!document.getElementById("sliding-iframe")) {
+// Check if the popup is already open
+if (!document.getElementById("sliding-popup-container")) {
     // Create container div
     let container = document.createElement("div");
-    container.id = "sliding-container";
-  
-    // Create iframe
-    let iframe = document.createElement("iframe");
-    iframe.id = "sliding-iframe";
-    iframe.src = "https://example.com"; // Change this to your desired webpage
-  
-    // Create close button
-    let closeButton = document.createElement("button");
-    closeButton.innerText = "×";
-    closeButton.id = "close-sliding";
-    closeButton.onclick = () => {
-      container.style.right = "-100%"; // Moves it out of view
-      setTimeout(() => container.remove(), 300);
-    };
-  
-    // Append elements
-    container.appendChild(closeButton);
-    container.appendChild(iframe);
-    document.body.appendChild(container);
-  
-    // Slide in effect
-    setTimeout(() => {
-      container.style.right = "0";
-    }, 100);
-  }
-  
+    container.id = "sliding-popup-container";
+
+    // Fetch and insert popup.html content
+    fetch(chrome.runtime.getURL("popup.html"))
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+            document.body.appendChild(container);
+
+            // Slide in effect
+            setTimeout(() => {
+                container.style.right = "0";
+            }, 100);
+
+            // Add close functionality
+            document.getElementById("close-btn").addEventListener("click", () => {
+                container.style.right = "-100vw"; // Slide out
+                setTimeout(() => container.remove(), 300);
+            });
+        });
+}
