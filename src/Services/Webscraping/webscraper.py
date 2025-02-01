@@ -33,7 +33,10 @@ def parse(url):
 
     timestamp = article.publish_date
     if timestamp is None:
+        # print("Timestamp was none")
         timestamp = getTimeStamp(title)
+
+    # print(timestamp is str)
 
     return title, text, timestamp
 
@@ -78,6 +81,9 @@ def find_articles(topic):
                 break
 
     ret = []
+
+    print(ret_articles[1].find("button")["aria-label"][7:])
+
     for article in ret_articles:
 
         title = quote_plus(article.find("button")["aria-label"][7:])
@@ -86,8 +92,6 @@ def find_articles(topic):
 
         response = requests.get(url)
         data = response.json()
-
-        print(title)
 
         for item in data["items"]:
             url = item["link"]

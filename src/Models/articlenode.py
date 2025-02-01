@@ -2,10 +2,10 @@ import datetime
 
 class ArticleNode:
 
-    def __init__(self, title: str, content: str, timestamp: str, link: str, depth: int, significance: int):
+    def __init__(self, title: str, content: str, timestamp: datetime.datetime, link: str, depth: int, significance: int):
         self.title = title
         self.content = content
-        self.timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        self.timestamp = timestamp # datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
         self.link = link
         self.predecessors = []
         self.successors = []

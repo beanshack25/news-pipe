@@ -3,7 +3,7 @@ from src.Services.OpenAIIntegrations.PredecessorService import query
 from src.Services.Webscraping.webscraper import parse, find_articles
 
 class Tree:
-    def __init__(self, articleURL: str, MAXD: int = 2):
+    def __init__(self, articleURL: str, MAXD: int = 4):
         self.rootNode = None
         self.MAXD = MAXD
         self.build(articleURL)
@@ -31,10 +31,13 @@ class Tree:
 
     def __repr__(self):
         cns = [self.rootNode]
+        string = ""
         while cns:
             cn = cns.pop(0)
-            print(cn.title, cn.depth)
+            string += cn.title + "::" + str(cn.depth) + "\n----------------\n"
             cns.extend(cn.predecessors)
+
+        return string
 
 
 urln = "https://www.bbc.co.uk/news/articles/c98yn345555o"
