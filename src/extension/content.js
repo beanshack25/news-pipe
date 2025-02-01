@@ -1,33 +1,31 @@
-// Check if the overlay already exists
-if (!document.getElementById("customOverlay")) {
-    // Create the overlay div
-    let overlay = document.createElement("div");
-    overlay.id = "customOverlay";
-    
-    // Add overlay content
-    overlay.innerHTML = `
-        <div id="overlayContent">
-            <span id="closeOverlay">&times;</span>
-            <h2>Overlay Panel</h2>
-            <p>This is a smooth overlay that slides in from the right.</p>
-        </div>
-    `;
-
-    // Inject styles
-    let style = document.createElement("link");
-    style.rel = "stylesheet";
-    style.href = chrome.runtime.getURL("styles.css");
-    document.head.appendChild(style);
-
-    // Append overlay to body
-    document.body.appendChild(overlay);
-
-    // Delay to trigger smooth animation
-    setTimeout(() => overlay.classList.add("visible"), 100);
-
-    // Close button functionality
-    document.getElementById("closeOverlay").addEventListener("click", function () {
-        overlay.classList.remove("visible"); // Slide out
-        setTimeout(() => overlay.remove(), 500); // Remove from DOM after animation
-    });
-}
+// Check if the iframe already exists
+if (!document.getElementById("sliding-iframe")) {
+    // Create container div
+    let container = document.createElement("div");
+    container.id = "sliding-container";
+  
+    // Create iframe
+    let iframe = document.createElement("iframe");
+    iframe.id = "sliding-iframe";
+    iframe.src = "https://example.com"; // Change this to your desired webpage
+  
+    // Create close button
+    let closeButton = document.createElement("button");
+    closeButton.innerText = "×";
+    closeButton.id = "close-sliding";
+    closeButton.onclick = () => {
+      container.style.right = "-100%"; // Moves it out of view
+      setTimeout(() => container.remove(), 300);
+    };
+  
+    // Append elements
+    container.appendChild(closeButton);
+    container.appendChild(iframe);
+    document.body.appendChild(container);
+  
+    // Slide in effect
+    setTimeout(() => {
+      container.style.right = "0";
+    }, 100);
+  }
+  

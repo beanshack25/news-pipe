@@ -1,38 +1,32 @@
-/* Overlay Container */
-#customOverlay {
+#sliding-container {
     position: fixed;
     top: 0;
-    right: -350px; /* Initially hidden */
-    width: 300px;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    color: white;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
-    transition: right 0.4s ease-in-out;
+    right: -100%; /* Start offscreen */
+    width: 100%;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease-in-out;
     z-index: 10000;
-}
-
-/* Show the overlay */
-#customOverlay.visible {
-    right: 0; /* Slide in */
-}
-
-/* Overlay Content */
-#overlayContent {
-    position: relative;
-    padding: 10px;
-}
-
-/* Close Button */
-#closeOverlay {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #sliding-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  #close-sliding {
     position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 24px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
     cursor: pointer;
-}
-#closeOverlay:hover {
-    color: red;
-}
+    font-size: 20px;
+  }
+  
