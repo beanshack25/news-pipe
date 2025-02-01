@@ -7,8 +7,7 @@ import os
 
 # Init
 key = os.getenv('NEWS_API_KEY')
-print(key)
-newsapi = newsapi.NewsApiClient(api_key='')
+newsapi = newsapi.NewsApiClient(api_key=key)
 
 # Given a query, return articles relevant to it
 def getArticleFromApi(query):
