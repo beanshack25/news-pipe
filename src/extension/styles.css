@@ -1,9 +1,9 @@
 #sliding-popup-container {
     position: fixed;
     top: 0;
-    right: 0; /* Ensure it starts from the right */
-    width: 90vw; /* Increase width to take more space */
-    height: 100vh; /* Full height */
+    right: -100vw; /* Start offscreen */
+    width: 100vw;
+    height: 100vh;
     background: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     transition: right 0.3s ease-in-out;
@@ -11,77 +11,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Remove horizontal scrolling */
 }
 
-/* Container for the tree */
-#tree-container {
-    position: relative;
-    width: 85vw; /* Make the tree area larger */
-    height: 90vh; /* Ensure it fills most of the popup */
-    overflow: auto; /* Allow scrolling within */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
-
-/* Expandable Boxes */
-.expandable-box {
-    position: relative; /* Allow for better alignment */
-    width: 250px; /* Increase size */
-    background: #f0f0f0;
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    padding: 10px;
+#sliding-popup {
     text-align: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    margin: 10px;
+    width: 90%;
+    max-width: 800px;
 }
 
-.expandable-box:hover {
-    background: #ffffff;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.box-title {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px;
-}
-
-.box-content {
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
-    text-align: center;
-}
-
-.box-content img {
-    width: 100%;
-    max-width: 150px;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-.date {
-    font-size: 14px;
-    color: gray;
-    margin-top: 5px;
-    display: block;
-}
-
-/* Connecting lines */
-.connection-line {
-    position: absolute;
-    height: 2px;
-    background: black;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Close Button */
 #close-btn {
     position: absolute;
     top: 20px;
