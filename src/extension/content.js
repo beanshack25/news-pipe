@@ -1,33 +1,25 @@
-// Check if the overlay already exists
-if (!document.getElementById("customOverlay")) {
-    // Create the overlay div
-    let overlay = document.createElement("div");
-    overlay.id = "customOverlay";
-    
-    // Add overlay content
-    overlay.innerHTML = `
-        <div id="overlayContent">
-            <span id="closeOverlay">&times;</span>
-            <h2>Overlay Panel</h2>
-            <p>This is a smooth overlay that slides in from the right.</p>
-        </div>
-    `;
+// Check if the popup is already open
+if (!document.getElementById("sliding-popup-container")) {
+    // Create container div
+    let container = document.createElement("div");
+    container.id = "sliding-popup-container";
 
-    // Inject styles
-    let style = document.createElement("link");
-    style.rel = "stylesheet";
-    style.href = chrome.runtime.getURL("styles.css");
-    document.head.appendChild(style);
+    // Fetch and insert popup.html content
+    fetch(chrome.runtime.getURL("popup.html"))
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+            document.body.appendChild(container);
 
-    // Append overlay to body
-    document.body.appendChild(overlay);
+            // Slide in effect
+            setTimeout(() => {
+                container.style.right = "0";
+            }, 100);
 
-    // Delay to trigger smooth animation
-    setTimeout(() => overlay.classList.add("visible"), 100);
-
-    // Close button functionality
-    document.getElementById("closeOverlay").addEventListener("click", function () {
-        overlay.classList.remove("visible"); // Slide out
-        setTimeout(() => overlay.remove(), 500); // Remove from DOM after animation
-    });
+            // Add close functionality
+            document.getElementById("close-btn").addEventListener("click", () => {
+                container.style.right = "-100vw"; // Slide out
+                setTimeout(() => container.remove(), 300);
+            });
+        });
 }

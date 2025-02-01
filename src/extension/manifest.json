@@ -1,15 +1,28 @@
 {
     "manifest_version": 3,
-    "name": "Smooth Overlay Extension",
+    "name": "Sliding Webpage",
     "version": "1.0",
-    "description": "Injects a smooth right-to-left overlay into any webpage",
-    "permissions": ["activeTab", "scripting"],
+    "description": "Slides in a webpage from the right when clicked.",
+    "permissions": ["activeTab"],
     "host_permissions": ["<all_urls>"],
     "background": {
       "service_worker": "background.js"
     },
     "action": {
-      "default_title": "Show Overlay"
-    }
+      "default_title": "Open Sliding Page"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "css": ["styles.css"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["popup.html"],
+        "matches": ["<all_urls>"]
+      }
+    ]
   }
   
