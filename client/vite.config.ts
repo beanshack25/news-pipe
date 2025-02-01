@@ -1,7 +1,19 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { sveltekit } from '@sveltejs/kit/vite';
+import Icons from 'unplugin-icons/vite';
+import { defineConfig } from 'vite';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  plugins: [
+    sveltekit(),
+    Icons({
+      compiler: 'svelte',
+      autoInstall: true
+    })
+  ],
+  // Tell Vitest to use the `browser` entry points in `package.json` files, even though it's running in Node
+  resolve: process.env.VITEST
+    ? {
+        conditions: ['browser']
+      }
+    : undefined
+});
