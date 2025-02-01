@@ -17,7 +17,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["popup.html"],
+      "resources": ["tree.html", "popup.html"],
       "matches": ["<all_urls>"]
     }
   ]
