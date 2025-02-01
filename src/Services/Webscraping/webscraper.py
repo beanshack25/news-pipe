@@ -79,7 +79,6 @@ def find_articles(topic):
                 break
 
     ret = []
-    i = 5
     for article in ret_articles:
 
         title = quote_plus(article.find("button")["aria-label"][7:])
@@ -89,15 +88,9 @@ def find_articles(topic):
         response = requests.get(url)
         data = response.json()
 
-        with open(f"test{i}.txt", "w", encoding="utf-8") as f:
-            soup = BeautifulSoup(response.text, "html.parser")
-            f.write(soup.prettify())
-
         for item in data["items"]:
             url = item["link"]
             break
-
-        i += 1
 
         ret.append(url)
 
