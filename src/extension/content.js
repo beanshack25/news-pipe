@@ -16,6 +16,12 @@ if (!document.getElementById("sliding-popup-container")) {
                 container.style.right = "0";
             }, 100);
 
+            // Set iframe src AFTER popup.html is added
+            let iframe = document.getElementById("iframe");
+            if (iframe) {
+                iframe.src = chrome.runtime.getURL("tree.html");
+            }
+
             // Add close functionality
             document.getElementById("close-btn").addEventListener("click", () => {
                 container.style.right = "-100vw"; // Slide out
