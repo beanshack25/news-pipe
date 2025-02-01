@@ -31,3 +31,55 @@
     font-size: 24px;
     border-radius: 5px;
 }
+
+.expandable-box {
+    width: 300px;
+    border-radius: 15px;
+    background: #f0f0f0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin: 20px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.box-title {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.box-content {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    text-align: center;
+}
+
+.box-content img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.date {
+    font-size: 14px;
+    color: gray;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Expand effect on hover */
+.expandable-box:hover {
+    background: #ffffff;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.expandable-box:hover .box-content {
+    max-height: 300px;
+    opacity: 1;
+}
+
