@@ -17,6 +17,12 @@
         "js": ["content.js"],
         "css": ["styles.css"]
       }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["popup.html"],
+        "matches": ["<all_urls>"]
+      }
     ]
   }
   
