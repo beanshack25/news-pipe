@@ -1,7 +1,8 @@
 from openai import OpenAI
+from src.KEYS import OPENAI_API_KEY
 
 client = OpenAI(
-    api_key="HAHA GET BINNED"
+    api_key=OPENAI_API_KEY
 )
 
 
