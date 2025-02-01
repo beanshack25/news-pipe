@@ -1,10 +1,10 @@
 # Scrape news articles from the web
 
-import re
+import requests
 from bs4 import BeautifulSoup
 
 def get_news_articles(url):
-    response = re.get(url)
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     articles = soup.find_all('article')
     output = []
