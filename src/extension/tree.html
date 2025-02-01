@@ -1,5 +1,12 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script type="module">
   import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
+
+  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+  })
 
   const treeData = {
     name: 'Root',
@@ -66,11 +73,31 @@
     .data(root.descendants())
     .enter()
     .append('circle')
+    .attr('fill', 'blue')
     .attr('cx', (d) => findX(d))
     .attr('cy', (d) => findY(d))
     .attr('r', 5)
-    .attr('fill', 'blue');
 
+  svg
+    .selectAll('foreignObject')
+    .data(root.descendants())
+    .enter()
+    .append('foreignObject')
+    .attr('x', (d) => findX(d) - 5)
+    .attr('y', (d) => findY(d) - 11)
+    .attr('width', 50)
+    .attr('height', 50)
+    .each(function (d) {
+    d3.select(this)
+      .append('xhtml:button') // Use XHTML namespace
+      .style('color', 'black') // Ensure text is visible
+      .text('H')
+      .attr('data-bs-toggle', 'popover')
+      .attr('data-bs-container', 'body')
+      .attr('data-bs-content', 'Haskell is fucking shit')
+      .attr('title', 'The industrial revolution and its consequences ...')
+      ;
+  });
   // Add labels
   svg
     .selectAll('text')
@@ -85,3 +112,6 @@
 
 <svg id="svg1"></svg>
 <svg id="svg2"></svg>
+<button type="button"
+    class="btn btn-lg btn-danger"
+    data-bs-toggle="popover" data-bs-trigger="hover focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
