@@ -3,15 +3,15 @@
 
   const treeData = {
     name: 'Root',
-    year: 2020,
+    year: new Date(2020, 0, 0),
     children: [
       {
-        name: 'Branch 1',
-        children: [{ name: 'Leaf 1A' }, { name: 'Leaf 1B' }],
+        name: 'Branch 1', year: new Date(2018, 0, 0),
+        children: [{ name: 'Leaf 1A', year: new Date(2016, 0, 0) }, { name: 'Leaf 1B' , year: new Date(2016, 0, 0)}],
       },
       {
-        name: 'Branch 2',
-        children: [{ name: 'Leaf 2A' }, { name: 'Leaf 2B' }],
+        name: 'Branch 2', year: new Date(2018, 0, 0),
+        children: [{ name: 'Leaf 2A', year: new Date(2013, 0, 0) }, { name: 'Leaf 2B', year: new Date(2016, 0, 0) }],
       },
     ],
   };
@@ -19,16 +19,19 @@
   const width = 800,
     height = 600;
   const svg = d3
-    .select('svg')
+    .select('#svg2')
     .attr('width', width)
     .attr('height', height)
     .append('g')
-    .attr('transform', 'translate(50,50)');
+    .attr('transform', 'translate(0,70)');
 
-  svg
+  const scale = d3.scaleTime([new Date(2000, 0, 1), new Date(2020, 0, 1)], [0, width - 100]);
+  d3.select("#svg2")
+    .attr('width', width)
+    .attr('height', height)
     .append('g')
-    .call(d3.axisTop(d3.scaleTime().domain([new Date(2000, 0, 1), new Date(2020, 0, 1)])
-    .range([0, 500])));
+    .attr("transform", `translate(0,20)`)
+    .call(d3.axisTop(scale));
 
   // Create a D3 hierarchy from data
   const root = d3.hierarchy(treeData);
@@ -37,7 +40,12 @@
   const treeLayout = d3.tree().size([height - 100, width - 100]);
   treeLayout(root);
 
-  const findX = (d) => width - 100 - d.y;
+  console.log(root)
+
+  const findX = (d) => {
+    console.log(scale(d))
+    return scale(d.data.year)
+  };
   const findY = (d) => d.x - 100;
 
   // Draw links (edges between nodes)
@@ -75,4 +83,5 @@
     .style('font-size', '12px');
 </script>
 
-<svg width="800" height="600" style="background-color: yellow"></svg>
+<svg id="svg1"></svg>
+<svg id="svg2"></svg>
