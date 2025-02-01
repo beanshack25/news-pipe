@@ -1,9 +1,13 @@
 from src.Models.articlenode import ArticleNode
 from src.Services.Webscraping.webscraper import parse, find_articles
 
+roots = []
+
 def build_reg_tree(root: str):
     title, text, timestamp = parse(root)
     rootNode = ArticleNode(title, text, timestamp, root, 0, 0)
+
+    roots.append(rootNode)
 
     # generate 2 generations of predecessors
     node = rootNode
@@ -17,16 +21,24 @@ def build_reg_tree(root: str):
 
     # try to generate 2 generations of sucessors
     node = rootNode
-    for i in range(2):
 
-        print("Generating sucessors")
+    print("Generating sucessors")
 
-        if not node.find_sucessors(2):
+    print(node.get_potential_future())
+
+def explore_new_node(root: str):
+    title, text, timestamp = parse(root)
+    rootNode = ArticleNode(title, text, timestamp, root, 0, 0)
+
+    for node in roots:
+        if node.includes(rootNode):
+            node.explore_further(rootNode)
             break
-        node = node.successors[0]
-
+    else:
+        build_reg_tree(root)
+    
         
 
 
-urln = "https://news.sky.com/story/teenage-gamer-becomes-first-person-to-beat-tetris-13041615"
+urln = "https://www.bbc.co.uk/news/technology-26969629"
 build_reg_tree(urln)

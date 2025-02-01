@@ -1,5 +1,5 @@
 import datetime
-from src.Services.OpenAIIntegrations.OpenAIQueryService import OpenAIGetArticlePredecessors, OpenAIGetArticleSucessors
+from src.Services.OpenAIIntegrations.OpenAIQueryService import OpenAIGetArticlePredecessors, OpenAIGetArticleSucessors, OpenAIGetFuture
 from src.Services.Webscraping.webscraper import parse, find_articles
 
 class ArticleNode:
@@ -7,14 +7,17 @@ class ArticleNode:
     def __init__(self, title: str, content: str, timestamp: datetime.datetime, link: str, depth: int, significance: int):
         self.title = title
         self.content = content
-        self.timestamp = timestamp # datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        self.timestamp = timestamp
         self.link = link
         self.predecessors = []
         self.successors = []
         self.depth = depth
         self.significance = significance
+        self.future = None
 
         print(self)
+
+        # TODO: tell client about new node
 
     def toJson(self):
         return {
@@ -26,13 +29,11 @@ class ArticleNode:
     def find_predecessors(self, num_preds=1):
         preds = OpenAIGetArticlePredecessors(self.toJson())
 
-
         if preds is None:
             return False
 
-        preds.sort(key=lambda x: x[1], reverse=True)
         for i in range(min(num_preds, len(preds))):
-            urls = find_articles(preds[i][0])
+            urls = find_articles(preds[i])
 
             if not urls:
                 continue
@@ -40,9 +41,11 @@ class ArticleNode:
             time_url = urls[min(1, len(urls) - 1)]
             title, content, publishDate = parse(time_url)
             if title is not None:
-                article = ArticleNode(title, content, publishDate, time_url, 0, preds[i][1])
-                article.successors.append(self)
-                self.predecessors.append(article)
+                article = ArticleNode(title, content, publishDate, time_url, 0, 0)
+
+                if article != self and article not in self.successors and article not in self.predecessors:
+                    article.successors.append(self)
+                    self.predecessors.append(article)
         
         return len(self.predecessors) > 0
 
@@ -62,10 +65,39 @@ class ArticleNode:
             title, content, publishDate = parse(time_url)
             if title is not None:
                 article = ArticleNode(title, content, publishDate, time_url, 0, sucs[i][1])
-                article.predecessors.append(self)
-                self.successors.append(article)
+
+                if article != self and article not in self.successors and article not in self.predecessors:
+                    article.predecessors.append(self)
+                    self.successors.append(article)
         
         return len(self.successors) > 0
+
+    def get_potential_future(self):
+        return OpenAIGetFuture(self.toJson())
+
+    def includes(self, other):
+        if self == other:
+            return True
+        for p in self.predecessors:
+            if p.includes(other):
+                return True
+        
+        return False
+    
+    def explore_further(self, link, path=False):
+        if self.link == link:
+            if len(self.predecessors) >= 3:
+                self.predecessors[1].explore_further(self.predecessors[1].link, path=True)
+            else:
+                self.find_predecessors(3 - len(self.predecessors))
+                self.predecessors[-1].find_predecessors(2)
+        else:
+            if path:
+                self.find_predecessors(3 - len(self.predecessors))
+            else:
+                for node in self.predecessors:
+                    node.explore_further(link)
+
 
 
     def __repr__(self):
@@ -76,3 +108,11 @@ class ArticleNode:
         string += "\n--------------\n"
 
         return string
+    
+    def __eq__(self, other):
+        if not other is ArticleNode:
+            return False
+        return self.link == other.link
+    
+    def __hash__(self):
+        return hash(self.link)

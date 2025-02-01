@@ -4,6 +4,7 @@ from newspaper import Article as NewsArticle
 from newspaper.article import ArticleException
 import os
 from urllib.parse import quote_plus
+from datetime import datetime
 
 url_base = r"https://www.news.google.com/"
 url_search = url_base + r"search?q="
@@ -21,6 +22,10 @@ def getTimeStamp(title):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     time = soup.find("time", {"class": "hvbAAd"})
+
+    if not time:
+        return datetime.today()
+
     return time["datetime"]
 
 
@@ -65,8 +70,6 @@ def find_articles(topic):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    print(response  )
-
     time_volume = find_volume_articles(soup)
 
     if len(time_volume) == 0:
@@ -79,7 +82,7 @@ def find_articles(topic):
     ret_articles = [articles[0]]
 
     for article in articles:
-        if make_datetime_month_year(article.find("time", {"class": "hvbAAd"})["datetime"]) == event_time:
+        if make_datetime_month_year(article.find("time")["datetime"]) == event_time:
             if article not in ret_articles:
                 ret_articles.append(article)
                 break
@@ -95,7 +98,7 @@ def find_articles(topic):
         response = requests.get(url, headers=headers)
         data = response.json()
 
-        try:    
+        try:
             for item in data["items"]:
                 url = item["link"]
                 break
