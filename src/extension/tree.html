@@ -107,7 +107,6 @@
       axis.setAttribute('y2', 20);
       axis.classList.add('axis');
       svg.appendChild(axis);
-        
 
       for (let year = 0; year <= newest - oldest; year++) {
         const x = 20 + year * YEAR_WIDTH;
@@ -173,18 +172,10 @@
   addNode('a', "A", lipsum, new Date(2020, 7, 21));
   addNode('e', "E", lipsum, new Date(2021, 8, 18));
   addNode('c', "C", lipsum, new Date(2022, 8, 5));
+  addNode('b', "B", lipsum, new Date(2021, 0, 1));
+  addNode('d', "D", lipsum, new Date(2023, 9, 10));
 
   drawNodes();
-
-  setTimeout(() => {
-    addNode('b', "B", lipsum, new Date(2021, 0, 1));
-    drawNodes();
-  }, 1000);
-
-  setTimeout(() => {
-    addNode('d', "D", lipsum, new Date(2023, 9, 10));
-    drawNodes();
-  }, 2000);
 </script>
 
 </body>
