@@ -9,9 +9,9 @@ def build_reg_tree(root: str, roots: list[ArticleNode]):
 
     roots.append(rootNode)
 
-    # generate 2 generations of predecessors
+    # generate 1 generations of predecessors
     node = rootNode
-    for i in range(2):
+    for i in range(1):
 
         print("Generating predecessors")
 
@@ -19,7 +19,7 @@ def build_reg_tree(root: str, roots: list[ArticleNode]):
             break
         node = node.predecessors[0]
     
-    print(rootNode.get_potential_future())
+    # print(rootNode.get_potential_future())
 
 
 def explore_new_node(root: str, roots: list[ArticleNode]):
@@ -36,5 +36,5 @@ def explore_new_node(root: str, roots: list[ArticleNode]):
         roots.append(rootNode)
         build_reg_tree(root, roots)
     
-roots = []
-build_reg_tree("https://www.bbc.co.uk/news/articles/cdrye506z1go", roots)
+# roots = []
+# build_reg_tree("https://www.bbc.co.uk/news/articles/cdrye506z1go", roots)

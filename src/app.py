@@ -23,7 +23,7 @@ def start():
 
 @app.route('/api/prevents', methods=['GET'])
 def get_prevents():
-    query = request.args.get('q')
+    query = request.args.get('url')
     predecessors = roots[-1].find_predecessors_2(query)
     combined = {"nodes": []}
     for node in predecessors:
