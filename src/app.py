@@ -14,10 +14,20 @@ def add_csp_header(response):
     response.headers['Content-Security-Policy'] = "script-src 'self' 'nonce-diddy'"
     return response
 
+@app.route('/api/start', methods=['POST'])
+def index_page():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No JSON received"}), 400
+    
+    url_from_request = data.get('url')
+
+    explore_new_node(url_from_request, roots)
+
 @app.route('/api/start', methods=['GET'])
 def start():
-    url = request.args.get('url')
-    build_reg_tree(url, roots)
+    if len(roots) == 0:
+        return jsonify({"error": "Not yet ready"}), 500
     data = {"nodes": [roots[-1].to_client()]}
     return jsonify(data), 200
 
@@ -44,11 +54,7 @@ def explore_future():
 def get_nodes():
     if len(roots) == 0:
         return jsonify({"error": "No JSON received"}), 400
-    
-    if len(roots) > 0:
-        print("woowwowowo:", roots[0].title)
     if roots[0].title is None and len(roots[0].predecessors) > 0:
-        print("Root is None")
         newRoot = roots[0].predecessors[0]
         newRoot.sucessors = []
         roots[0] = newRoot
