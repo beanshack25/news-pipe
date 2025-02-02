@@ -1,6 +1,6 @@
 from src.Models.articlenode import ArticleNode
 from src.Services.Webscraping.webscraper import parse, find_articles
-
+import threading
 
 
 def build_reg_tree(root: str, roots: list[ArticleNode]):
@@ -38,3 +38,15 @@ def explore_new_node(root: str, roots: list[ArticleNode]):
     
 # roots = []
 # build_reg_tree("https://www.bbc.co.uk/news/articles/cdrye506z1go", roots)
+
+# print("Built")
+
+# preds = roots[-1].find_predecessors_2("https://www.bbc.co.uk/news/articles/cdrye506z1go")
+
+# combined = {"nodes": []}
+# for node in preds:
+#     combined["nodes"].append(node.to_client())
+#     thread = threading.Thread(target=node.get_new_preds)
+#     thread.start()
+
+# print(combined)

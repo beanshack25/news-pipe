@@ -34,7 +34,8 @@ def parse(url):
         article = NewsArticle(url, headers=headers)
         article.download()
         article.parse()
-    except ArticleException:
+    except ArticleException as e:
+        print(e)
         return None, None, None
 
     title = article.title
