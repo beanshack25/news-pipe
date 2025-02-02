@@ -97,6 +97,10 @@ def OpenAIGetFuture(content):
         messages=[
             {"role": "system",
              "content": "Your goal is to respond with short, concise news headlines, and provide some content for this news."
+                        "Give your output in this 3 section format:"
+                        "Headline:,"
+                        "Content:,"
+                        "Evidence:,"
                         "You must also provide suitable evidence for the news headline and content that you provide."
                         "You will be given a list of news articles. These articles are in such"
                         "a way that one event is followed by the other, and therefore one is a direct cause of the other,"
@@ -104,8 +108,8 @@ def OpenAIGetFuture(content):
                         "articles, and the headline/content you return must be caused by and follow the latest event from these articles"
                         "Do your best to make the response as rooted in world events occuring at "
                         "the time of the latest news article as possible, and make sure the evidence you base on is from these articles."
-                        "Your response must also denote sources for these evidences."
-
+                        "In the content you provide, clearly show where you have used the evidence provided to you."
+                        "Evidence should have links that were provided to you."
              },
             {"role": "user", "content": str(content)}
         ]
