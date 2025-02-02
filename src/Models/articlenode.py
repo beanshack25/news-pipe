@@ -111,11 +111,11 @@ class ArticleNode:
             baseJson["parent"] = self.successors[0].id
         return baseJson
     
-    def find_predecessors(self, link: str):
+    def find_predecessors_2(self, link: str):
         if self.link == link:
             return self.predecessors
         for p in self.predecessors:
-            v = p.find_predecessors(link)
+            v = p.find_predecessors_2(link)
             if v is not None:
                 return v
         return None

@@ -17,7 +17,7 @@ def add_csp_header(response):
 @app.route('/api/prevents', methods=['GET'])
 def get_prevents():
     query = request.args.get('q')
-    predecessors = roots[-1].find_predecessors(query)
+    predecessors = roots[-1].find_predecessors_2(query)
     combined = {"nodes": []}
     for node in predecessors:
         combined["nodes"].append(node.to_client())
