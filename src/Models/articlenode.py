@@ -125,6 +125,13 @@ class ArticleNode:
         for p in self.predecessors:
             p.find_predecessors(1 - len(p.predecessors))
 
+    def url_list(self):
+        curList = [self.link]
+        for node in self.predecessors:
+            curList.extend(node.url_list())
+
+        return curList
+
 
     def __repr__(self):
         string = "\n--------------\n"
