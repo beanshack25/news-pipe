@@ -61,11 +61,13 @@ function renderNodes(nodes) {
     const container = document.getElementById("node-container");
     container.innerHTML = "";
     nodes.forEach((node) => {
-        const div = document.createElement("div");
-        div.classList.add("node");
-        div.textContent = node.title;
-        div.onclick = () => postNodeClick(node.url);
-        container.appendChild(div);
+        // Create flashcard.js component
+        const flashcard = document.createElement("flash-card");
+        flashcard.setAttribute("title", node.title);
+        flashcard.setAttribute("link", node.url);
+        flashcard.setAttribute("content", node.content);
+        flashcard.onclick = () => postNodeClick(node.url);
+        document.body.appendChild(flashcard);
     });
 }
 
@@ -79,8 +81,8 @@ window.onload = async () => {
     // Wait a few seconds before fetching nodes
     await sleep(2000);
 
-    // Try to fetch nodes every 2 seconds
-    setInterval(fetchNodes, 5000);
+    // Try to fetch nodes every 5 seconds
+    setInterval(fetchNodes, 20000);
 };
 
 

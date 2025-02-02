@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Node Viewer</title>
+    <script src="flashcard.js" defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
         }
         .node {
             width: 100px;
@@ -27,11 +31,17 @@
 </head>
 <body>
     <h1>Node Viewer</h1>
-    <div class="container" id="node-container"></div>
+    <!-- <div class="container" id="node-container"></div> -->
 
-    <script src="app.js" nonce="nonce-diddy">
-        
-    </script>
+    <div class="container" id="node-container">
+        <script src="app.js" nonce="nonce-diddy"></script> 
+        <!-- <flash-card     
+            title="bbc news article" 
+            content="A powerful search engine." 
+            link="https://edition.cnn.com/2025/02/01/us/helicopter-plane-crash-washington-dc-narrative/index.html">
+        </flash-card> -->
+    </div>
+      
     
 </body>
 </html>

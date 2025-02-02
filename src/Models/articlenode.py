@@ -105,6 +105,8 @@ class ArticleNode:
         baseJson = self.toJson()
         baseJson["id"] = self.id
         baseJson["url"] = self.link
+        preds_list = [p.id for p in self.predecessors]
+        baseJson["predecessors"] = preds_list
         if len(self.successors) > 0:
             baseJson["parent"] = self.successors[0].id
         return baseJson
