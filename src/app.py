@@ -28,7 +28,7 @@ def get_prevents():
     combined = {"nodes": []}
     for node in predecessors:
         combined["nodes"].append(node.to_client())
-        thread = threading.Thread(target=node.get_new_preds())
+        thread = threading.Thread(target=node.get_new_preds)
         thread.start()
 
     return jsonify(combined), 200
