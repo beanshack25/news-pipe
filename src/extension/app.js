@@ -69,11 +69,18 @@ function renderNodes(nodes) {
     });
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Call the initialization function when the page loads
-window.onload = () => {
+window.onload = async () => {
     initializeNodes();
+    // Wait a few seconds before fetching nodes
+    await sleep(2000);
+
     // Try to fetch nodes every 2 seconds
-    setInterval(fetchNodes, 10000);
+    setInterval(fetchNodes, 5000);
 };
 
 

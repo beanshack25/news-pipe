@@ -18,6 +18,14 @@ def get_nodes():
     if len(roots) == 0:
         return jsonify({"error": "No JSON received"}), 400
     
+    if len(roots) > 0:
+        print("woowwowowo:", roots[0].title)
+    if roots[0].title is None and len(roots[0].predecessors) > 0:
+        print("Root is None")
+        newRoot = roots[0].predecessors[0]
+        newRoot.sucessors = []
+        roots[0] = newRoot
+    
     combined = {"nodes": []}
     
     queue = [roots[-1]]
