@@ -22,6 +22,10 @@ def index_page():
     
     url_from_request = data.get('url')
 
+    if url_from_request == r"http://localhost:3000/":
+        print("We here boys")
+        return jsonify({"message": "ok"}), 200
+
     explore_new_node(url_from_request, roots)
 
 @app.route('/api/start', methods=['GET'])
