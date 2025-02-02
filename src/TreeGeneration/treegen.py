@@ -30,9 +30,11 @@ def explore_new_node(root: str, roots: list[ArticleNode]):
     title, text, timestamp = parse(root)
     rootNode = ArticleNode(title, text, timestamp, root, 0, 0)
 
+    print("Checking includes with ", root)
     for node in roots:
         if node.includes(rootNode):
-            node.explore_further(rootNode)
+            print("we are so back")
+            node.explore_further(root)
             break
     else:
         roots.append(rootNode)

@@ -37,6 +37,9 @@ def explore_url():
         return jsonify({"error": "No JSON received"}), 400
     
     url_from_request = data.get('url')
+
+    print("URL FROM REQUEST: ", url_from_request)
+
     explore_new_node(url_from_request, roots)
 
     return jsonify({"message": "Data received", "data": data}), 200

@@ -1,9 +1,9 @@
 #sliding-popup-container {
     position: fixed;
     top: 0;
-    right: -100vw; /* Start offscreen */
-    width: 100vw;
-    height: 100vh;
+    right: -100%; /* Start offscreen */
+    width: 100%;
+    height: 100%;
     background: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     transition: right 0.3s ease-in-out;

@@ -63,7 +63,7 @@ function renderNodes(nodes) {
     nodes.forEach((node) => {
         const div = document.createElement("div");
         div.classList.add("node");
-        div.textContent = node.name;
+        div.textContent = node.title;
         div.onclick = () => postNodeClick(node.url);
         container.appendChild(div);
     });
@@ -73,7 +73,7 @@ function renderNodes(nodes) {
 window.onload = () => {
     initializeNodes();
     // Try to fetch nodes every 2 seconds
-    setInterval(fetchNodes, 20000);
+    setInterval(fetchNodes, 10000);
 };
 
 

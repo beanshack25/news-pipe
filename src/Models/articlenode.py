@@ -78,7 +78,8 @@ class ArticleNode:
         return OpenAIGetFuture(self.toJson())
 
     def includes(self, other):
-        if self == other:
+        print("Checking includes for ", self.link)
+        if self.link == other.link:
             return True
         for p in self.predecessors:
             if p.includes(other):
@@ -118,9 +119,10 @@ class ArticleNode:
         return string
     
     def __eq__(self, other):
-        if not other is ArticleNode:
+        if other is not ArticleNode:
             return False
         return self.link == other.link
     
     def __hash__(self):
         return hash(self.link)
+    
