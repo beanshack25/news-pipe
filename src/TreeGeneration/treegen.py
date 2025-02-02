@@ -18,13 +18,9 @@ def build_reg_tree(root: str, roots: list[ArticleNode]):
         if not node.find_predecessors(3):
             break
         node = node.predecessors[0]
+    
+    print(rootNode.get_potential_future())
 
-    # try to generate 2 generations of sucessors
-    node = rootNode
-
-    print("Generating sucessors")
-
-    print(node.get_potential_future())
 
 def explore_new_node(root: str, roots: list[ArticleNode]):
     title, text, timestamp = parse(root)
@@ -40,4 +36,5 @@ def explore_new_node(root: str, roots: list[ArticleNode]):
         roots.append(rootNode)
         build_reg_tree(root, roots)
     
-        
+roots = []
+build_reg_tree("https://www.bbc.co.uk/news/articles/cdrye506z1go", roots)

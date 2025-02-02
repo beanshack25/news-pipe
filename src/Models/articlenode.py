@@ -75,7 +75,7 @@ class ArticleNode:
         return len(self.successors) > 0
 
     def get_potential_future(self):
-        return OpenAIGetFuture(self.toJson())
+        return OpenAIGetFuture(self.url_list())
 
     def includes(self, other):
         print("Checking includes for ", self.link)

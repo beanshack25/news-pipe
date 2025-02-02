@@ -14,6 +14,13 @@ def add_csp_header(response):
     response.headers['Content-Security-Policy'] = "script-src 'self' 'nonce-diddy'"
     return response
 
+@app.route('/api/start', methods=['GET'])
+def start():
+    url = request.args.get('url')
+    build_reg_tree(url, roots)
+    data = {"nodes": [roots[-1].to_client()]}
+    return jsonify(data), 200
+
 @app.route('/api/prevents', methods=['GET'])
 def get_prevents():
     query = request.args.get('q')
@@ -26,6 +33,12 @@ def get_prevents():
 
     return jsonify(combined), 200
 
+@app.route('/api/explore-future', methods=['GET'])
+def explore_future():
+    if len(roots) == 0:
+        return jsonify({"error": "No JSON received"}), 400
+    future = roots[-1].get_potential_future()
+    return jsonify({"future": future}), 200
 
 @app.route('/api/nodes', methods=['GET'])
 def get_nodes():
