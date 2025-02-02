@@ -35,12 +35,11 @@ def OpenAIGetArticlePredecessors(content, depth=0):
                         ". Crucially, try to keep predecessors one logical level of implication "
                         "backwards, rather than several. So for example, 'Battle of the Somme' may not have 'Assasination "
                         "of Franz Ferdinand' as a predecessor, but it may be linked maybe 5-6 levels back. "
-                        "Significance should be an integer scale quantifying approximately how much sigificance "
-                        "a particular predecessor had on a predecessor. Do not include any new line characters"
-
-             },
+             ,
+        },
             {"role": "user", "content": str(content)}
-        ]
+        ],
+        temperature=0
     ))
 
     try:
@@ -81,7 +80,8 @@ def OpenAIGetArticleSucessors(content, depth=0):
 
              },
             {"role": "user", "content": str(content)}
-        ]
+        ],
+        temperature=0
     ))
 
     try:
@@ -93,15 +93,18 @@ def OpenAIGetArticleSucessors(content, depth=0):
 
 def OpenAIGetFuture(content):
     response = (client.chat.completions.create(
-        model="gpt-4o",
+        model="o3-mini",
         messages=[
             {"role": "system",
-             "content": "Your goal is to respond with short, concise news headlines."
-                        "You will be given content from a news article and you must predict, "
-                        "to the best of your ability, a future news headline that could follow "
-                        "as a direct response to the headline."
+             "content": "Your goal is to respond with short, concise news headlines, and provide some content for this news."
+                        "You must also provide suitable evidence for the news headline and content that you provide."
+                        "You will be given a list of news articles. These articles are in such"
+                        "a way that one event is followed by the other, and therefore one is a direct cause of the other,"
+                        "forming a chain (or multiple chains leading up to a main event) this way. You must read through these"
+                        "articles, and the headline/content you return must be caused by and follow the latest event from these articles"
                         "Do your best to make the response as rooted in world events occuring at "
-                        "the time of the news article as possible."
+                        "the time of the latest news article as possible, and make sure the evidence you base on is from these articles."
+                        "Your response must also denote sources for these evidences."
 
              },
             {"role": "user", "content": str(content)}
