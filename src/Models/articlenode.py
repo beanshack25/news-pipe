@@ -101,11 +101,12 @@ class ArticleNode:
                     node.explore_further(link)
 
     def to_client(self):
-        baseJson = self.toJson
+        baseJson = self.toJson()
         baseJson["id"] = self.id
+        baseJson["url"] = self.link
         if len(self.successors) > 0:
             baseJson["parent"] = self.successors[0].id
-        baseJson
+        return baseJson
 
     def __repr__(self):
         string = "\n--------------\n"

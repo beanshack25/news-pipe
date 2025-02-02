@@ -8,6 +8,11 @@ CORS(app)  # Allow requests from the frontend
 
 roots = []
 
+@app.after_request
+def add_csp_header(response):
+    response.headers['Content-Security-Policy'] = "script-src 'self' 'nonce-diddy'"
+    return response
+
 @app.route('/api/nodes', methods=['GET'])
 def get_nodes():
     if len(roots) == 0:
@@ -15,13 +20,13 @@ def get_nodes():
     
     combined = {"nodes": []}
     
-    queue = [roots[0]]
+    queue = [roots[-1]]
 
     while len(queue) > 0:
-        node = roots.pop()
+        node = queue.pop()
         combined["nodes"].append(node.to_client())
         queue += node.predecessors
-    
+
     return jsonify(combined), 200
 
 

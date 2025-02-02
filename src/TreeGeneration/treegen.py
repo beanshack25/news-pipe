@@ -35,6 +35,7 @@ def explore_new_node(root: str, roots: list[ArticleNode]):
             node.explore_further(rootNode)
             break
     else:
+        roots.append(rootNode)
         build_reg_tree(root, roots)
     
         
