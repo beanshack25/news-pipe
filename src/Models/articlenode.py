@@ -110,6 +110,21 @@ class ArticleNode:
         if len(self.successors) > 0:
             baseJson["parent"] = self.successors[0].id
         return baseJson
+    
+    def find_predecessors(self, link: str):
+        if self.link == link:
+            return self.predecessors
+        for p in self.predecessors:
+            v = p.find_predecessors(link)
+            if v is not None:
+                return v
+        return None
+    
+    def get_new_preds(self):
+        self.find_predecessors(3 - len(self.predecessors))
+        for p in self.predecessors:
+            p.find_predecessors(1 - len(p.predecessors))
+
 
     def __repr__(self):
         string = "\n--------------\n"

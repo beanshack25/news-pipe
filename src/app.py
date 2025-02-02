@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-
+import threading
 from src.TreeGeneration.treegen import build_reg_tree, explore_new_node
+from src.Models.articlenode import ArticleNode
 
 app = Flask("Causalitree")
 CORS(app)  # Allow requests from the frontend
@@ -12,6 +13,19 @@ roots = []
 def add_csp_header(response):
     response.headers['Content-Security-Policy'] = "script-src 'self' 'nonce-diddy'"
     return response
+
+@app.route('/api/prevents', methods=['GET'])
+def get_prevents():
+    query = request.args.get('q')
+    predecessors = roots[-1].find_predecessors(query)
+    combined = {"nodes": []}
+    for node in predecessors:
+        combined["nodes"].append(node.to_client())
+        thread = threading.Thread(target=node.get_new_preds())
+        thread.start()
+
+    return jsonify(combined), 200
+
 
 @app.route('/api/nodes', methods=['GET'])
 def get_nodes():
